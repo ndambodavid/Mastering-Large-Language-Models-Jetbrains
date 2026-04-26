@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+.idea/VirtualEnvironment/
+venv/
+env/
+
+# IDE
+.idea/
+*.iml
+
+# Data & model outputs
+NLPBasics/data/
+NLPBasics/output/
+LanguageModeling/task01_ngrams/arxivLinesTrain.txt
+LanguageModeling/task01_ngrams/arxivLinesTest.txt
+FineTuning/data/train_test/
+FineTuning/experiments/*/
+!FineTuning/experiments/.keep
+RAG/data/cache/
+RAG/data/models/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Hypothesis test database
+.hypothesis/
+
+# Pytest cache
+.pytest_cache/
+
+# Byte-compiled / optimized / DLL files
+*.pyc
