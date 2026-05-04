@@ -31,10 +31,13 @@ class GloVeEmbeddings:
 
     def get_word_vectors(self, words: list):
         """Get the vector representations for a list of words.
-        
+
         Note: In case a word is not in the vocabulary, return a zero vector."""
-        pass # TODO: use model.get_vector
-    
+        return np.array([
+            self.model.get_vector(w) if w in self.model else self._unknown_emb.copy()
+            for w in words
+        ])
+
     def get_phrase_embedding(self, phrase: str) -> np.ndarray:
         """
         Convert phrase to a vector by aggregating word embeddings.
@@ -44,16 +47,26 @@ class GloVeEmbeddings:
         - Skip words not in the model's vocabulary
         - If all words are missing from the vocabulary, return zeros
         """
-        pass # TODO: YOUR CODE HERE
+        tokens = self.tokenizer.tokenize(phrase)
+        known_vectors = [self.model.get_vector(t) for t in tokens if t in self.model]
+        if not known_vectors:
+            return self._unknown_emb.copy()
+        return np.mean(known_vectors, axis=0)
 
     def compute_phrase_vectors(self, phrases: list[str], max_tokens: int | None = 30) -> np.ndarray:
         """Truncate and compute vectors for a list of phrases.
-        
+
         Args:
             phrases (list[str]): List of phrases to compute embeddings for.
             max_tokens (int): Maximum number of tokens to consider in each phrase. (If None, consider all tokens)
         """
-        pass # TODO: YOUR CODE HERE
+        result = []
+        for phrase in phrases:
+            if max_tokens is not None:
+                tokens = self.tokenizer.tokenize(phrase)[:max_tokens]
+                phrase = ' '.join(tokens)
+            result.append(self.get_phrase_embedding(phrase))
+        return np.array(result)
 
 
 N_WORDS = 1000
