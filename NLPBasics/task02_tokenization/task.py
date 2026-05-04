@@ -25,24 +25,26 @@ class Tokenizer:
     def tokenize(self, text: str) -> list[str]:
         """
         Tokenizes the input text.
-        
+
         1. Lowercase the text
         2. Remove '<br />' tags
         3. Tokenize the text using WordPunctTokenizer
         """
-        # TODO: implement tokenize function
-        return tokens
-    
+        text = text.lower()
+        text = text.replace('<br />', '')
+        return self.tokenizer.tokenize(text)
+
     def preprocess_text(self, text: str) -> str:
         """Process the text (tokenize and join)."""
-        pass # TODO: YOUR CODE HERE
+        return ' '.join(self.tokenize(text))
 
     def apply_preprocess(self, df: pd.DataFrame) -> pd.DataFrame:
         """Applies preprocessing of the 'text' column of the DataFrame.
-        
+
         Use `pd.Series.apply`
         """
-        # TODO: YOUR CODE HERE
+        df = df.copy()
+        df['text'] = df['text'].apply(self.preprocess_text)
         return df
 
 def get_sample_texts(df: pd.DataFrame, n: int = 3, random_state: int = 42) -> list:
