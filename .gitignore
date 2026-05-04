@@ -23,6 +23,7 @@ env/
 # Data & model outputs
 NLPBasics/data/
 NLPBasics/output/
+NLPBasics/task03_glove_embeddings/.gensim_data/
 LanguageModeling/task01_ngrams/arxivLinesTrain.txt
 LanguageModeling/task01_ngrams/arxivLinesTest.txt
 FineTuning/data/train_test/
