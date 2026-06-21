@@ -24,8 +24,6 @@ additional_files:
     visible: true
   - name: FineTuning/experiments/.keep
     visible: true
-  - name: .cadence/configs/Helper Utils task.yaml
-  - name: .cadence/configs/PEFT task.yaml
   - name: GenAnkiCards/__init__.py
 mode: Study
 feedback_link: https://plugins.jetbrains.com/plugin/28816-mastering-large-language-models/reviews

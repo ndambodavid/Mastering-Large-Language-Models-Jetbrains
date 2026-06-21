@@ -30,7 +30,11 @@ class KNNClassifier:
 
     def cos_sim(self, a: np.ndarray, b: np.ndarray) -> float:
         """Compute the cosine similarity between two vectors."""
-        pass # TODO: compute cosine similarity. Note: if any vector close to zero, return zero
+        norm_a = np.linalg.norm(a)
+        norm_b = np.linalg.norm(b)
+        if norm_a < 1e-8 or norm_b < 1e-8:
+            return 0.0
+        return np.dot(a, b) / (norm_a * norm_b)
 
     def find_nearest(self, query: str, k: int = 10) -> tuple:
         """
@@ -46,13 +50,15 @@ class KNNClassifier:
         k = min(k, len(self.train_df))  # Ensure k is not larger than the training set size
         query_vec = self.get_phrase_embedding(query)
 
-        # TODO: get top_k_sorted_ids
+        similarities = np.array([self.cos_sim(query_vec, x) for x in self.X_train])
+        top_k_ids = np.argpartition(-similarities, k - 1)[:k]
+        top_k_sorted_ids = top_k_ids[np.argsort(-similarities[top_k_ids])]
 
         return self.train_df.iloc[top_k_sorted_ids].text.values, self.y_train[top_k_sorted_ids]
 
     def get_accuracy(self, X_test_phrases: list, y_test: np.ndarray, k: int) -> float:
         """Compute the accuracy of the kNN classifier on the test dataset.
-        
+
         Steps:
             1. For each test phrase, find the k most similar training samples.
             2. Extract the prediction, that is the most common label among the k nearest (e.g. [0, 1, 1, 0, 1] -> 1).
@@ -61,7 +67,8 @@ class KNNClassifier:
         """
         correct = 0
         for i, phrase in tqdm(enumerate(X_test_phrases), total=len(X_test_phrases)):
-            # TODO: extract pred for given phrase
+            _, neighbor_labels = self.find_nearest(phrase, k)
+            pred = np.bincount(neighbor_labels).argmax()
             correct += pred == y_test[i]
         return correct / len(y_test)
 
